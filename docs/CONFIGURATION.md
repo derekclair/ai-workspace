@@ -211,9 +211,11 @@ Model Context Protocol (MCP) servers extend Claude and GitHub Copilot's capabili
 
 ## GitHub Copilot
 
-### AGENTS.md File
+### Copilot Instructions (single source of truth)
 
-The `AGENTS.md` file provides context and instructions to AI assistants. Enable it with:
+This workspace uses `.github/copilot-instructions.md` as the single source of truth for AI agent guidance and Copilot context. It consolidates agent-facing guidance that was previously duplicated in `AGENTS.md`.
+
+Recommended settings to enable Copilot guidance in VS Code:
 
 ```json
 {
@@ -222,11 +224,7 @@ The `AGENTS.md` file provides context and instructions to AI assistants. Enable 
 }
 ```
 
-See [AGENTS.md](../AGENTS.md) for project-specific agent instructions.
-
-### Copilot Instructions
-
-The `.github/copilot-instructions.md` file provides project-wide context to Copilot. This file should include:
+The `.github/copilot-instructions.md` file should include:
 
 - Tech stack
 - Coding standards
