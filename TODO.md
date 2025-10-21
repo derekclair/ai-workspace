@@ -13,7 +13,7 @@
 
 ## High Priority 🔴
 
-- [ ] Add PostgreSQL MCP server and configure database
+- [x] Add PostgreSQL MCP server and configure database
   ```json
   "postgres": {
     "command": "npx",

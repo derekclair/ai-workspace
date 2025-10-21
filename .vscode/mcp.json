@@ -9,7 +9,6 @@
     "atlassian/atlassian-mcp-server": {
       "type": "http",
       "url": "https://mcp.atlassian.com/v1/sse",
-      "gallery": "https://api.mcp.github.com/v0/servers/28c650c6-5e61-4ab7-9eb2-505be6350476",
       "version": "1.0.0"
     },
     "hashicorp/terraform-mcp-server": {
@@ -64,6 +63,14 @@
       "env": {
         "DISABLE_THOUGHT_LOGGING": "false"
       }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/mydb"
+      ]
     }
   },
   "inputs": []
