@@ -23,7 +23,6 @@
       "version": "1.0.0"
     },
     "aws.terraform": {
-      "disabled": false,
       "command": "uvx",
       "args": [
         "awslabs.terraform-mcp-server@latest"
@@ -36,7 +35,6 @@
       "autoApprove": []
     },
     "Docker": {
-      "disabled": false,
       "command": "docker",
       "args": [
         "mcp",
