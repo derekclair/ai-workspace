@@ -55,6 +55,7 @@ jspm_packages/
 *.env
 
 # MCP Memory (contains conversation history)
+.config/
 .config/memory.json
 
 # Terraform
