@@ -1,0 +1,27 @@
+{
+  // Markdown Editor
+  "[markdown]": {
+    "editor.wordWrap": "on"
+  },
+
+  // MCP Configuration
+  "chat.mcp.access": "all",
+  "chat.mcp.autostart": true,
+  "chat.mcp.gallery.enabled": true,
+
+  // GitHub Copilot Chat Settings
+  "chat.renderRelatedFiles": false,
+  "chat.todoListTool.descriptionField": true,
+  "chat.useAgentsMdFile": true,
+  "chat.useNestedAgentsMdFiles": true,
+
+  // Terminal Configuration
+  "chat.tools.terminal.autoReplyToPrompts": true,
+  "chat.tools.terminal.terminalProfile.osx": {
+    "path": "bash",
+    "args": [],
+    "env": {
+      "COPILOT": "1"
+    }
+  }
+}
