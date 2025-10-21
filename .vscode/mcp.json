@@ -45,14 +45,15 @@
       ]
     },
     "memory": {
-      "command": "npx",
+      "command": "docker",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-memory"
-      ],
-      "env": {
-        "MEMORY_FILE_PATH": ".config/memory.json"
-      }
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "/Users/derek/Code/github.com/derekclair/ai-workspace/.config:/app/.config",
+        "mcp/memory"
+      ]
     },
     "sequential-thinking": {
       "command": "npx",
