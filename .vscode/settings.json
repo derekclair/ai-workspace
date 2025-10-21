@@ -47,6 +47,10 @@
     // Terraform read operations
     "/^terraform\\s+(validate|fmt|show|output|version)\\b/": true,
 
+    // Docker read operations
+    "/^docker\\s+(ps|images|inspect|logs|version)\\b/": true,
+    "/^docker-compose\\s+(ps|images|config|version)\\b/": true,
+
     // Explicitly deny dangerous commands
     "rm": false,
     "rmdir": false,

@@ -46,10 +46,12 @@
       "command": "docker",
       "args": [
         "run",
-        "--rm",
         "-i",
         "-v",
-        "${workspaceFolder}/.config:/app/dist",
+        "ai-workspace:/app/dist",
+        "--env",
+        "MEMORY_FILE_PATH=/${workspaceFolder}/.config/memory.jsonl",
+        "--rm",
         "mcp/memory"
       ]
     },

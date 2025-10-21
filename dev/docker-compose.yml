@@ -1,12 +1,13 @@
 services:
   postgres:
     image: postgres:15.4
-    container_name: ai-workspace-postgres
+    container_name: ai-workspace-db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: example
       POSTGRES_DB: ai-workspace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
     volumes:
@@ -15,4 +16,4 @@ services:
 
 volumes:
   postgres-data:
-    name: ai_workspace_postgres_data
+    name: ai_workspace_pg_data
