@@ -23,5 +23,59 @@
     "env": {
       "COPILOT": "1"
     }
+  },
+
+  // Terminal Auto-Approval
+  // SECURITY: Only safe, read-only commands are auto-approved
+  "chat.tools.terminal.autoApprove": {
+    // Git read-only operations
+    "/^git\\s+(status|diff|log|show|branch|remote)\\b/": true,
+    
+    // Directory navigation and inspection
+    "/^(ls|pwd|cd)\\b/": true,
+    
+    // File inspection (read-only)
+    "/^(cat|less|more|head|tail)\\b/": true,
+    
+    // NPM/Yarn read operations
+    "/^npm\\s+(list|ls|view|show)\\b/": true,
+    "/^yarn\\s+list\\b/": true,
+    
+    // Echo for testing
+    "/^echo\\b/": true,
+    
+    // Terraform read operations
+    "/^terraform\\s+(validate|fmt|show|output|version)\\b/": true,
+
+    // Explicitly deny dangerous commands
+    "rm": false,
+    "rmdir": false,
+    "del": false,
+    "/^Remove-Item\\b/i": false,
+    "kill": false,
+    "killall": false,
+    "chmod": false,
+    "chown": false,
+    "/^git\\s+(push|reset|revert|clean|rm)\\b/": false,
+    "curl": false,
+    "wget": false,
+    "eval": false,
+    "exec": false,
+    "/^npm\\s+install\\b/": false,
+    "/^yarn\\s+add\\b/": false,
+    "/^pip\\s+install\\b/": false
+  },
+
+  // File Edit Auto-Approval
+  // SECURITY: Critical config files require manual review
+  "chat.tools.edits.autoApprove": {
+    "**/*": true,
+    "**/.vscode/*.json": false,
+    "**/.git/**": false,
+    "**/{package.json,package-lock.json,server.xml,build.rs,web.config,.gitattributes,.env}": false,
+    "**/*.{csproj,fsproj,vbproj}": false,
+    "**/*.tf": false,
+    "**/*.tfvars": false,
+    "**/.github/workflows/**": false
   }
 }
