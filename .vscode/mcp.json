@@ -1,0 +1,70 @@
+{
+  "servers": {
+    "github/github-mcp-server": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "gallery": "https://api.mcp.github.com/v0/servers/ab12cd34-5678-90ef-1234-567890abcdef",
+      "version": "0.13.0"
+    },
+    "atlassian/atlassian-mcp-server": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "gallery": "https://api.mcp.github.com/v0/servers/28c650c6-5e61-4ab7-9eb2-505be6350476",
+      "version": "1.0.0"
+    },
+    "hashicorp/terraform-mcp-server": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hashicorp/terraform-mcp-server"
+      ],
+      "version": "1.0.0"
+    },
+    "aws.terraform": {
+      "disabled": false,
+      "command": "uvx",
+      "args": [
+        "awslabs.terraform-mcp-server@latest"
+      ],
+      "env": {
+        "AWS_PROFILE": "sandbox",
+        "AWS_REGION": "us-west-2",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "autoApprove": []
+    },
+    "Docker": {
+      "disabled": false,
+      "command": "docker",
+      "args": [
+        "mcp",
+        "gateway",
+        "run"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": ".config/memory.json"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {
+        "DISABLE_THOUGHT_LOGGING": "false"
+      }
+    }
+  },
+  "inputs": []
+}
