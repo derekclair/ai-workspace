@@ -150,7 +150,7 @@ ai-workspace/
 │   ├── extensions.json               # Recommended extensions
 │   └── task-list.mdc                 # Task management
 ├── .config/
-│   └── memory.json                   # Persistent memory storage
+│   └── memory.json                   # (optional) local persistent memory storage (gitignored)
 ├── docs/
 │   └── CONFIGURATION.md              # Detailed configuration guide
 ├── AGENTS.md                         # Agent-specific context

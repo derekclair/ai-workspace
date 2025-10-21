@@ -91,7 +91,7 @@
   - Validation script for configurations
   - Setup script for new users
   - Health check for MCP servers
-  - Backup script for memory.json
+  - (optional) Backup script for local `.config/memory.json` — user-managed
 
 ## Documentation Improvements 📝
 

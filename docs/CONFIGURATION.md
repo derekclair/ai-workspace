@@ -160,25 +160,20 @@ Model Context Protocol (MCP) servers extend Claude and GitHub Copilot's capabili
 - Inspect images
 - Execute commands in containers
 
-#### 6. Memory MCP Server
-**Purpose**: Provide persistent memory across chat sessions.
+#### 6. Memory (externally managed)
+**Purpose**: Provide persistent memory across chat sessions. In this repository we do not run a local memory MCP server by default. Memory is expected to be managed by a local desktop application (for example, Claude Desktop) or another environment-specific process.
+
+Notes:
+- The repository previously included examples for running a local memory server; those have been removed to avoid accidentally storing conversation history in the repo.
+- Local memory files are stored under `.config/` and are intentionally gitignored. If you use Claude Desktop or another client, configure it to point to the workspace `.config` folder for persistence.
+
+Example (Claude Desktop config snippet) - user-managed:
 
 ```json
-{
-  "memory": {
-    "command": "npx",
-    "args": ["-y", "@modelcontextprotocol/server-memory"],
-    "env": {
-      "MEMORY_FILE_PATH": ".config/memory.json"
-    }
-  }
-}
+"memory": { "command": "docker", "args": ["run","-i","-v","<workspace>/.config:/app/.config","--env","MEMORY_FILE_PATH=/<workspace>/.config/memory.jsonl","--rm","mcp/memory"] }
 ```
 
-**Usage**:
-- Stores context between sessions
-- Remembers project-specific preferences
-- Memory stored in `.config/memory.json`
+This keeps memory management local to the developer's machine and out of repository control.
 
 #### 7. Sequential Thinking MCP Server (RECOMMENDED)
 **Purpose**: Enable structured, step-by-step problem solving for complex tasks.

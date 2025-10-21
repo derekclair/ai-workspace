@@ -180,10 +180,12 @@ ai-workspace/
 - Access documentation
 - Plan infrastructure
 
-**Memory** - Persistent context
-- Store project-specific information
+**Memory** - Persistent context (externally managed)
+- Store project-specific information (managed locally by the developer)
 - Remember preferences
 - Maintain context across sessions
+
+Note: The repository does not start or manage a memory server by default. If you use a local memory server (for example, Claude Desktop), configure it to mount the workspace `.config` directory so memory is persisted locally and not committed to the repository.
 
 **Sequential Thinking** - Complex problem-solving
 - Break down complex tasks
