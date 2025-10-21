@@ -9,7 +9,7 @@ This instruction file documents how to configure and use the PostgreSQL MCP serv
 
 ## MCP server configuration
 
-Add the following entry to `.vscode/mcp.json` (example):
+Add the following entry to `.vscode/mcp.json` (example). Note the DB name is `ai-workspace` in this repo:
 
 ```json
 "postgres": {
@@ -17,7 +17,7 @@ Add the following entry to `.vscode/mcp.json` (example):
   "args": [
     "-y",
     "@modelcontextprotocol/server-postgres",
-    "postgresql://localhost/mydb"
+    "postgresql://localhost/ai-workspace"
   ]
 }
 ```
@@ -30,25 +30,28 @@ Notes:
 
 Recommended approach: run a local PostgreSQL container for development and testing.
 
-Example (Docker):
+We provide a reproducible development compose stack under `dev/docker-compose.yml` which will initialize a Postgres 15.4 container and run initialization scripts located in `dev/init/`.
+
+Usage (exact commands used in this repo):
 
 ```bash
-# Start a local Postgres instance
-docker run --name ai-workspace-postgres -e POSTGRES_PASSWORD=example -e POSTGRES_DB=mydb -p 5432:5432 -d postgres:15
+# Start the local compose stack (detached)
+docker compose -f dev/docker-compose.yml up -d
 
-# Seed sample data (example)
-docker exec -i ai-workspace-postgres psql -U postgres -d mydb <<'SQL'
-CREATE TABLE IF NOT EXISTS users (
-  id serial PRIMARY KEY,
-  name text NOT NULL,
-  email text UNIQUE NOT NULL
-);
-INSERT INTO users (name, email) VALUES ('Alice','alice@example.com');
-SQL
+# Tail logs for the postgres service
+docker compose -f dev/docker-compose.yml logs -f postgres
+
+# Verify seeded data (run inside the container)
+docker exec -i ai-workspace-postgres psql -U postgres -d "ai-workspace" -c "SELECT count(*) FROM users;"
+
+# Stop and remove the stack (preserves images by default)
+docker compose -f dev/docker-compose.yml down
 ```
 
+The `dev/init/seed.sql` file is executed automatically on first startup. It creates a `users` table and inserts a sample user.
+
 Environment variables (to avoid committing secrets):
-- POSTGRES_URL or DATABASE_URL — e.g. postgresql://postgres:example@localhost:5432/mydb
+- POSTGRES_URL or DATABASE_URL — e.g. postgresql://postgres:example@localhost:5432/ai-workspace
 
 Load these into your shell when working locally, or use a `.env` file that is ignored by git.
 
