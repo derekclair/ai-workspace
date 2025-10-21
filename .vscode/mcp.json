@@ -42,24 +42,13 @@
         "run"
       ]
     },
-    "memory": {
+    "sequential-thinking": {
       "command": "docker",
       "args": [
         "run",
         "-i",
-        "-v",
-        "ai-workspace:/app/dist",
-        "--env",
-        "MEMORY_FILE_PATH=/${workspaceFolder}/.config/memory.jsonl",
         "--rm",
-        "mcp/memory"
-      ]
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
+        "ghcr.io/modelcontextprotocol/server-sequential-thinking"
       ],
       "env": {
         "DISABLE_THOUGHT_LOGGING": "false"
