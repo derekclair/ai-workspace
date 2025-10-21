@@ -49,7 +49,7 @@
         "--rm",
         "-i",
         "-v",
-        "/Users/derek/Code/github.com/derekclair/ai-workspace/.config:/app/.config",
+        "${workspaceFolder}/.config:/app/dist",
         "mcp/memory"
       ]
     },
