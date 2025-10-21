@@ -69,7 +69,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
-        "postgresql://localhost/mydb"
+        "postgresql://localhost/ai-workspace"
       ]
     }
   },
