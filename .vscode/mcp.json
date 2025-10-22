@@ -48,7 +48,7 @@
         "run",
         "-i",
         "--rm",
-        "ghcr.io/modelcontextprotocol/server-sequential-thinking"
+        "mcp/sequentialthinking"
       ],
       "env": {
         "DISABLE_THOUGHT_LOGGING": "false"
