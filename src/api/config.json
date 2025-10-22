@@ -1,0 +1,16 @@
+{
+  "baseUrl": "https://apollo.engineering.iqgeo.cloud",
+  "endpoints": {
+    "conflictFixer": "/iqgcom_conflict_fixer.html"
+  },
+  "api": {
+    "version": "v1",
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  },
+  "rateLimit": {
+    "maxRequestsPerMinute": 60,
+    "enabled": true
+  }
+}

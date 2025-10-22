@@ -1,0 +1,16 @@
+{
+  "name": "iqgeo-api-client",
+  "version": "1.0.0",
+  "description": "API client for IQGeo Conflict Fixer",
+  "main": "src/api/client.js",
+  "scripts": {
+    "test": "node src/api/test.js",
+    "lint": "eslint src/api/**.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0"
+  }
+}

@@ -13,6 +13,26 @@
 
 ## High Priority 🔴
 
+- [ ] IQGeo Conflict Fixer API Integration
+  - Phase 1: API Analysis and Documentation
+    - [ ] Analyze API endpoints and authentication
+    - [ ] Document data structures and validation rules
+    - [ ] Update iqgeo-api.instructions.md
+  - Phase 2: Mock Data Strategy
+    - [ ] Define data templates and scenarios
+    - [ ] Update data generation prompts
+    - [ ] Create validation scripts
+  - Phase 3: Implementation
+    - [ ] Create API interaction scripts
+    - [ ] Implement data generation
+    - [ ] Add error handling and logging
+  - Phase 4: Testing
+    - [ ] Validate data and API interactions
+    - [ ] Performance testing
+  - Phase 5: Documentation
+    - [ ] Update all documentation
+    - [ ] Create usage guidelines
+
 - [x] Add PostgreSQL MCP server and configure database
   ```json
   "postgres": {
