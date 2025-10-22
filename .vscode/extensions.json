@@ -2,7 +2,7 @@
   "recommendations": [
     "github.copilot",
     "github.copilot-chat",
-    "ms-kubernetes-tools.vscode-kubernetes-tools",
-    "ms-vscode.vscode-github-issue-notebooks"
+    "ms-vscode.vscode-github-issue-notebooks",
+    "timonwong.shellcheck"
   ]
 }

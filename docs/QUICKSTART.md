@@ -113,7 +113,7 @@ Using sequential thinking, help me design a CI/CD pipeline for this workspace
 
 1. **Add domain-specific instructions** in `.github/instructions/`
 2. **Create custom prompts** in `.github/prompts/`
-3. **Update AGENTS.md** with your project context
+3. **Update `copilot-instructions.md`** with your project context
 
 ### Explore MCP Servers
 
@@ -173,7 +173,7 @@ docker ps
 - Never auto-approve destructive commands
 
 ### 2. Document Everything
-- Keep AGENTS.md updated with project context
+- Keep `copilot-instructions.md` updated with project context
 - Document custom patterns and their rationale
 - Maintain instruction files for your domain
 
@@ -189,8 +189,8 @@ docker ps
 
 ### 5. Maintain Context
 - Use the Memory server for persistent context
-- Update AGENTS.md regularly
-- Keep copilot-instructions.md current
+- Update `copilot-instructions.md` regularly
+- Keep `copilot-instructions.md` current
 
 ## Getting Help
 

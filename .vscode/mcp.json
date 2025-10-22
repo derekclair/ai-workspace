@@ -1,4 +1,13 @@
 {
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "db-uri",
+      "description": "Database connection URL",
+      "default": "postgresql://localhost/ai-workspace",
+      "password": true,
+    }
+  ],
   "servers": {
     "github/github-mcp-server": {
       "type": "http",
@@ -32,7 +41,8 @@
         "AWS_REGION": "us-west-2",
         "FASTMCP_LOG_LEVEL": "ERROR"
       },
-      "autoApprove": []
+      "autoApprove": [],
+      "type": "stdio"
     },
     "Docker": {
       "command": "docker",
@@ -40,7 +50,8 @@
         "mcp",
         "gateway",
         "run"
-      ]
+      ],
+      "type": "stdio"
     },
     "sequential-thinking": {
       "command": "docker",
@@ -52,16 +63,18 @@
       ],
       "env": {
         "DISABLE_THOUGHT_LOGGING": "false"
-      }
+      },
+      "type": "stdio"
     },
     "postgres": {
+      "type": "stdio",
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-postgres",
-        "postgresql://localhost/ai-workspace"
-      ]
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "DATABASE_URL": "${input:db-uri}"
     }
-  },
-  "inputs": []
+  }
 }

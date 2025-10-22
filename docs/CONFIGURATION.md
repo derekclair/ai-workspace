@@ -242,20 +242,20 @@ Terminal auto-approval allows safe commands to run without confirmation. Our con
   "chat.tools.terminal.autoApprove": {
     // Git read-only operations
     "/^git\\s+(status|diff|log|show|branch|remote)\\b/": true,
-    
+
     // Directory navigation and inspection
     "/^(ls|pwd|cd)\\b/": true,
-    
+
     // File inspection (read-only)
     "/^(cat|less|more|head|tail)\\b/": true,
-    
+
     // NPM/Yarn read operations
     "/^npm\\s+(list|ls|view|show)\\b/": true,
     "/^yarn\\s+list\\b/": true,
-    
+
     // Echo for testing
     "/^echo\\b/": true,
-    
+
     // Terraform read operations
     "/^terraform\\s+(validate|fmt|show|output|version)\\b/": true
   }
@@ -272,26 +272,26 @@ Terminal auto-approval allows safe commands to run without confirmation. Our con
     "rmdir": false,
     "del": false,
     "/^Remove-Item\\b/i": false,
-    
+
     // Process management
     "kill": false,
     "killall": false,
-    
+
     // Permission changes
     "chmod": false,
     "chown": false,
-    
+
     // Git write operations
     "/^git\\s+(push|reset|revert|clean|rm)\\b/": false,
-    
+
     // Network operations
     "curl": false,
     "wget": false,
-    
+
     // Execution
     "eval": false,
     "exec": false,
-    
+
     // Package installation (should be reviewed)
     "/^npm\\s+install\\b/": false,
     "/^yarn\\s+add\\b/": false,
@@ -302,16 +302,16 @@ Terminal auto-approval allows safe commands to run without confirmation. Our con
 
 ### Pattern Syntax
 
-- **Regex patterns**: Wrap in forward slashes: `/pattern/`
-- **Exact matches**: Use plain strings: `"rm"`
-- **Case-insensitive**: Add `i` flag: `/^Remove-Item\\b/i`
+- **Regex patterns**: wrap in forward slashes: `/pattern/`
+- **Exact matches**: use plain strings: `"rm"`
+- **Case-insensitive**: add `i` flag: `/^Remove-Item\\b/i`
 
 ### Security Considerations
 
-1. **Review before enabling**: Understand what each pattern matches
-2. **Start restrictive**: Add patterns as needed, don't enable all commands
-3. **Project-specific**: Adjust based on your workflow and risk tolerance
-4. **Regular audits**: Review and update patterns periodically
+1. **Review before enabling**: understand what each pattern matches
+2. **Start restrictive**: add patterns as needed, don't enable all commands
+3. **Project-specific**: adjust based on your workflow and risk tolerance
+4. **Regular audits**: review and update patterns periodically
 
 ---
 
@@ -328,16 +328,16 @@ File edit auto-approval controls which files can be modified without confirmatio
   "chat.tools.edits.autoApprove": {
     // Auto-approve all files by default
     "**/*": true,
-    
+
     // Except VS Code configuration
     "**/.vscode/*.json": false,
-    
+
     // Except Git internals
     "**/.git/**": false,
-    
+
     // Except critical config files
     "**/{package.json,package-lock.json,server.xml,build.rs,web.config,.gitattributes,.env}": false,
-    
+
     // Except .NET project files
     "**/*.{csproj,fsproj,vbproj}": false
   }
@@ -346,10 +346,10 @@ File edit auto-approval controls which files can be modified without confirmatio
 
 #### Rationale
 
-- **Source code**: Auto-approved for rapid iteration
-- **Configuration**: Manual review to prevent misconfigurations
-- **Dependencies**: Manual review to avoid unexpected changes
-- **Project files**: Manual review to maintain project integrity
+- **Source code**: auto-approved for rapid iteration
+- **Configuration**: manual review to prevent misconfigurations
+- **Dependencies**: manual review to avoid unexpected changes
+- **Project files**: manual review to maintain project integrity
 
 #### Customization
 
@@ -361,10 +361,10 @@ Add patterns based on your project:
     // Terraform files require review
     "**/*.tf": false,
     "**/*.tfvars": false,
-    
+
     // Database migrations require review
     "**/migrations/**": false,
-    
+
     // CI/CD configurations require review
     "**/.github/workflows/**": false
   }
@@ -395,7 +395,7 @@ Add patterns based on your project:
 
 ### 4. Documentation
 
-- **Keep AGENTS.md updated**: Ensure AI assistants have current context
+- **Keep `copilot-instructions.md` updated**: Ensure AI assistants have current context
 - **Document custom patterns**: Explain why specific patterns are allowed/denied
 - **Version control**: Commit configuration files to share with team
 

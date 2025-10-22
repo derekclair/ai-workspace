@@ -11,7 +11,7 @@ This is an **AI Workspace** - a reference implementation for AI-enhanced develop
 3. Provide reusable templates and patterns
 4. Document MCP server integration
 
-**Target Audience**: Developers looking to set up AI-enhanced workspaces
+**Target Audience**: developers looking to set up AI-enhanced workspaces
 
 ## Tech Stack
 
@@ -29,27 +29,36 @@ This is an **AI Workspace** - a reference implementation for AI-enhanced develop
 ## Coding Standards
 
 ### Language-Specific Conventions
+- **Formatting**:
+  - Prettier defaults
+  - use EditorConfig
+  - ensure consistent line endings (LF),
+    **NO carraige returns (CRLF)**
+  - preserve trailing commas in JSON
+- **Indentation**: Tabs are 2 spaces
 - Markdown (`.md`)
-   - Use ATX-style headers (`#` not `===`)
-   - Include table of contents for documents > 3 sections
-   - Use fenced code blocks with language identifiers
-   - Link to related documentation
-   - Prefer relative links for internal references
+  - use ATX-style headers (`#` not `===`)
+  - include table of contents for documents > 3 sections
+  - use fenced code blocks _with language identifiers_
+  - link to related documentation, use footnotes where appropriate
+  - prefer relative links for internal references
 - JSON (`.json`) Configuration Files
-   - **Indentation**: 2 spaces
-   - **Comments**: Use `//` for inline comments in VS Code settings
-   - **Organization**: Group related settings together
-   - **Documentation**: Add comments for non-obvious configurations
+  - **Comments**: use `//` for inline comments in VS Code settings
+  - **Documentation**: add comments for non-obvious configurations
+  - **Organization**:
+    - default to alphabetical order of keys
+    - group related settings together, especially in particularly large files
+  - **Formatting**:
 - Shell (`.sh`) Scripts
-   - **Shebang**: `#!/usr/bin/env bash`
-   - **Error handling**: Use `set -e` and `set -u`
-   - **Comments**: Explain complex logic
-   - **Linting**: Follow shellcheck recommendations
+  - **Shebang**: `#!/usr/bin/env bash`
+  - **Error handling**: use `set -e` and `set -u`
+  - **Comments**: explain complex logic
+  - **Linting**: use Shellcheck
 - Terraform (`.tf`)
-   - **Style**: Follow Terraform style guide
-   - **State**: Never commit state files
-   - **Secrets**: Use variables, never hardcode
-   - **Modules**: Prefer official modules when available
+  - **Style**: follow Terraform style guide
+  - **State**: never commit state files
+  - **Secrets**: use variables, never hardcode
+  - **Modules**: prefer official modules when available
 
 ## Project Structure
 
@@ -65,8 +74,9 @@ ai-workspace/
 │   ├── mcp.json                   # MCP server config
 │   └── extensions.json            # Recommended extensions
 ├── docs/
-│   └── CONFIGURATION.md           # Detailed config docs
-├── AGENTS.md                      # AI agent instructions
+│   ├── CONFIGURATION.md           # Detailed config docs
+│   ├── QUICKSTART.md             # Getting started guide
+│   └── archive/                   # Historical documentation
 └── README.md                      # Project overview
 ```
 
@@ -153,11 +163,11 @@ ai-workspace/
 
 1. Create `*.instructions.md` in `.github/instructions/`
 2. Follow format of existing files:
-   - Overview of the domain
-   - Best practices
-   - Common patterns
-   - Example code
-3. Reference from AGENTS.md if relevant
+   - overview of the domain
+   - best practices
+   - common patterns
+   - example code
+3. Reference from `copilot-instructions.md` if relevant
 4. Test effectiveness with Copilot
 
 ## MCP Server Usage
@@ -200,6 +210,14 @@ Note: The repository does not start or manage a memory server by default. If you
 - **Memory**: Maintaining context across sessions
 - **Sequential Thinking**: Complex architectural decisions, debugging intricate issues
 
+Atlassian authentication troubleshooting: if you see authentication failures with the Atlassian MCP server, first try running the remote connector locally to verify connectivity and credentials. Run:
+
+```
+npx -y mcp-remote https://mcp.atlassian.com/v1/sse
+```
+
+If that succeeds, re-check your local MCP configuration and any stored credentials; if it fails, capture the error output and open a support issue with the Atlassian MCP team including the error text and the command you ran.
+
 ## Best Practices
 
 ### Configuration Changes
@@ -232,7 +250,7 @@ When suggesting code:
 ## Troubleshooting Guidance
 
 When helping troubleshoot:
-1. **Check common issues first** (documented in CONFIGURATION.md)
+1. **Check common issues first** (documented in `docs/CONFIGURATION.md`)
 2. **Verify prerequisites** (VS Code version, extensions, etc.)
 3. **Suggest systematic debugging** (logs, settings, restarts)
 4. **Provide specific solutions** not just general advice
