@@ -5,10 +5,10 @@
 - [x] Configure comprehensive `chat.tools.terminal.autoApprove` settings
 - [x] Add Sequential Thinking MCP server configuration
 - [x] Create comprehensive documentation in `docs/CONFIGURATION.md`
-- [x] Update AGENTS.md with project context
-- [x] Update .github/copilot-instructions.md with detailed guidance
-- [x] Add proper .gitignore file
-- [x] Fix filename typo: mpc.json → mcp.json
+- [x] Update `copilot-instructions.md` with project context
+- [x] Update `.github/copilot-instructions.md` with detailed guidance
+- [x] Add proper `.gitignore` file
+- [x] Fix filename typo: `mpc.json` → `mcp.json`
 - [x] Update README.md with comprehensive overview
 
 ## High Priority 🔴

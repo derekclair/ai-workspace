@@ -9,7 +9,7 @@ This repository serves as a reference implementation for setting up an AI-enhanc
 - **GitHub Copilot** integration with custom prompts and instructions
 - **Model Context Protocol (MCP)** servers for extended AI capabilities
 - **Security-conscious auto-approval** settings for terminal and file operations
-- **Project-specific context** through AGENTS.md and instruction files
+- **Project-specific context** through `copilot-instructions.md` and domain-specific instruction files
 
 ## Quick Start
 
@@ -79,7 +79,6 @@ See [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) for detailed information on
 ### 📝 Context & Instructions
 
 - **`.github/copilot-instructions.md`**: Project-wide instructions for Copilot
-- **`AGENTS.md`**: Additional context for AI agents
 - **`.github/instructions/`**: Domain-specific instruction files
 - **`.github/prompts/`**: Reusable prompt templates
 
@@ -89,8 +88,7 @@ See [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) for detailed information on
 
 AI agents use several files to understand your project:
 
-1. **`AGENTS.md`**: High-level project context and conventions
-2. **`.github/copilot-instructions.md`**: Specific instructions for Copilot
+1. **`.github/copilot-instructions.md`**: Project-wide instructions for Copilot
 3. **`.github/instructions/*.instructions.md`**: Domain-specific guidance
 
 Enable these features in settings:
@@ -153,7 +151,6 @@ ai-workspace/
 │   └── memory.json                   # (optional) local persistent memory storage (gitignored)
 ├── docs/
 │   └── CONFIGURATION.md              # Detailed configuration guide
-├── AGENTS.md                         # Agent-specific context
 ├── README.md                         # This file
 └── TODO.md                           # Project tasks
 ```
@@ -180,7 +177,7 @@ All configurations are documented in [`docs/CONFIGURATION.md`](docs/CONFIGURATIO
 
 ### 2. Context Management
 
-- **Keep AGENTS.md updated** with current project context
+- **Keep `copilot-instructions.md` updated** with current project context
 - **Document decisions** in instruction files
 - **Use custom prompts** for repeated workflows
 - **Leverage memory server** for persistent context
@@ -217,8 +214,8 @@ All configurations are documented in [`docs/CONFIGURATION.md`](docs/CONFIGURATIO
 
 ### Chat Not Using Context
 
-1. Ensure `chat.useAgentsMdFile` is enabled
-2. Check that AGENTS.md is not empty
+1. Ensure `chat.useAgentsMdFile` setting is enabled
+2. Check that `copilot-instructions.md` contains project context
 3. Verify `.github/copilot-instructions.md` exists
 4. Restart VS Code to reload context files
 

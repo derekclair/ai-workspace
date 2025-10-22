@@ -12,13 +12,25 @@ This instruction file documents how to configure and use the PostgreSQL MCP serv
 Add the following entry to `.vscode/mcp.json` (example). Note the DB name is `ai-workspace` in this repo:
 
 ```json
-"postgres": {
-  "command": "npx",
-  "args": [
-    "-y",
-    "@modelcontextprotocol/server-postgres",
-    "postgresql://localhost/ai-workspace"
-  ]
+"inputs": [
+  ...
+  {
+    "type": "promptString",
+    "id": "db-url",
+    "description": "Database connection URL",
+    "password": true
+  }
+],
+"servers": {
+  ...
+  "postgres": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-postgres"],
+    "env": {
+      "DATABASE_URL": "${input:db-url}"
+    }
+  }
 }
 ```
 
@@ -90,6 +102,3 @@ psql "$DATABASE_URL"
 - Keep the Postgres Docker image version pinned in local dev scripts (e.g., postgres:15.4).
 - Periodically rotate local and CI credentials and update documentation.
 
----
-
-If you want, I can also add a short example Terraform module that provisions an RDS/Postgres instance (with secure defaults) and a matching `.tftest.hcl` verification.
