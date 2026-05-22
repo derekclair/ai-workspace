@@ -1,10 +1,242 @@
 # Considerations for `quantbot`, `polymarket-arbitrager3000`, and `autonomous-trading-bot`
 
-**Status**: Draft Spec v0.1 | **Date**: 2026-05-22 | **Owner**: Grok (for review by @derekclair and Grok Build)
+**Status**: Draft Spec v0.2 (with Diagrams) | **Date**: 2026-05-22 | **Owner**: Grok (for review by @derekclair and Grok Build)
 
 > **Purpose**: This living document captures critical considerations, risks, architectural principles, and open questions for resuming or advancing work on quantitative trading systems, with special emphasis on the autonomous-trading-bot. It is written so that Grok Build, AI agents, or human developers can pick it up and execute methodically using spec-driven development (SDD). 
 >
 > These projects carry significant financial, operational, regulatory, and personal risk. They should only proceed with strict scoping, robust safeguards, and alignment to broader life priorities (SRE career, family towel manufacturing business, family time).
+
+---
+
+## Architecture & Trading Logic Diagrams
+
+> **Note**: All diagrams use Mermaid syntax (natively rendered by GitHub). They focus on **trading logic and flows**, not low-level function calls. They are designed to be implementation-agnostic so they can guide both traditional quant code and agentic implementations.
+
+### 1. High-Level System Overview
+
+```mermaid
+flowchart TB
+    subgraph Core Library
+        QB[quantbot
+Core Library]
+        QB --> Risk[Risk Engine
+Vol Targeting + Kelly + Limits]
+        QB --> BT[Backtester
+High-Fidelity w/ Costs]
+        QB --> Exec[Execution Abstraction
+Paper / Live]
+    end
+
+    subgraph Specialized Bots
+        ARB[polymarket-arbitrager3000
+Arb Scanner + Executor]
+        ARB -->|Uses| QB
+    end
+
+    subgraph Autonomous Layer
+        ATB[autonomous-trading-bot
+Agent-Driven System]
+        ATB -->|Consumes| QB
+        ATB -->|Specialized Arb| ARB
+        ATB --> Guard[Guardrails Layer
+Pre-Trade Validator + Circuit Breakers + Audit]
+    end
+
+    Data[(Market Data
+Polymarket + External)] --> ATB
+    Data --> ARB
+    Wallet[(Wallet / Exchange
+State)] --> Exec
+    Log[(Decision + Trade
+Audit Log)] --> ATB
+
+    classDef core fill:#e3f2fd,stroke:#1976d2
+    classDef guard fill:#fff3e0,stroke:#f57c00
+    class ATB,Guard guard
+    class QB,Risk,BT,Exec core
+```
+
+**Key Insight**: `quantbot` provides the trustworthy foundation. The autonomous layer adds intelligence + strict guardrails. Everything funnels through the Risk Engine and Guardrails.
+
+### 2. Autonomous Trading Logic Flow (Core Execution Logic)
+
+This is the primary trading logic diagram for the `autonomous-trading-bot`. It shows the end-to-end decision and execution flow with safety baked in at every critical gate.
+
+```mermaid
+flowchart TD
+    Start[Start Loop /
+New Market Data or Timer] --> Ingest[Ingest Data &
+Detect Opportunities
+News, Prices, Orderbook, On-Chain]
+    
+    Ingest --> Research[Research & Reasoning
+Agent + Tools:
+Historical Calibration,
+External Signals, EV Calc]
+    
+    Research --> Validate{Pre-Trade Risk
+Validator
+Code-Enforced}
+    
+    Validate -->|FAIL| LogFail[Log Decision +
+Reason + Data Snapshot
+→ Alert / Escalate to Human]
+    LogFail --> Pause[Pause Trading or
+Reduce Size]
+    Pause --> EndLoop[End Current Loop Iteration]
+    
+    Validate -->|PASS| Size[Calculate Position Size
+Vol Target + Fractional Kelly
++ Portfolio Correlation]
+    
+    Size --> Circuit{Circuit Breakers
+& Hard Limits Check
+Daily Loss, DD, Vol Regime,
+Liquidity, Agent Confidence}
+    
+    Circuit -->|FAIL| LogFail
+    
+    Circuit -->|PASS| Execute[Execute Trade
+Idempotent Order Placement
+Paper Mode or Live
+with Retry + Reconciliation]
+    
+    Execute --> Monitor[Post-Trade Monitoring
+Realized vs Expected P&L
+Position Reconciliation
+Anomaly Detection]
+    
+    Monitor --> LogSuccess[Full Decision Audit Log
+Reasoning Trace + Tool Outputs
++ Expected vs Actual Outcome
+→ Store for Learning]
+    
+    LogSuccess --> Learn[Update Memory / Model
+Performance Attribution
+Strategy Health Check]
+    
+    Learn --> EndLoop
+    
+    classDef gate fill:#ffebee,stroke:#c62828
+    classDef success fill:#e8f5e9,stroke:#2e7d32
+    class Validate,Circuit gate
+    class Execute,LogSuccess,Learn success
+```
+
+**Trading Logic Highlights**:
+- **Every opportunity passes through a hard-coded Pre-Trade Risk Validator** (not just a prompt).
+- **Circuit breakers** are independent of the reasoning agent.
+- **Full audit trail** is mandatory before and after every action.
+- Failure paths always lead to logging + human escalation rather than silent continuation.
+- The loop supports both high-frequency scanning and event-driven triggers.
+
+### 3. Risk & Position Sizing Logic (Detailed Gate)
+
+Zoomed-in view of the critical sizing and risk gate used by all three projects.
+
+```mermaid
+flowchart TD
+    Opp[Opportunity /
+Signal Detected] --> Data[Fetch Current Portfolio
+State + Market Vol + Correlations]
+    
+    Data --> VolTarget[Apply Volatility Targeting
+Position Scalar =
+Target Vol / Realized Vol
+EWMA or ATR]
+    
+    VolTarget --> Kelly[Apply Fractional Kelly
+f = (b·p - q) / b
+Edge-Adjusted for Fees & Resolution Risk]
+    
+    Kelly --> Corr[Adjust for Portfolio
+Correlation & Heat
+Reduce if Theme Concentration High]
+    
+    Corr --> Limits{Hard Limits Check
+• Per-Position Cap
+• Daily Loss Limit
+• Trailing DD Stop
+• Liquidity Threshold}
+    
+    Limits -->|Pass| Approve[Approve Sized Position
++ Generate Trade Plan]
+    Limits -->|Fail| Reject[Reject + Log Rationale
++ Suggest Alternative or Hold]
+    
+    classDef decision fill:#fff8e1,stroke:#f9a825
+    class Limits decision
+```
+
+**Formulas embedded**:
+- Volatility targeting scalar
+- Fractional Kelly for discrete prediction market outcomes
+- Correlation/heat overlay
+
+### 4. Trade Execution & Monitoring State Flow
+
+High-level state machine for a single trade lifecycle (used by both arb and directional strategies).
+
+```mermaid
+stateDiagram-v2
+    [*] --> Detecting: Opportunity Scan
+    Detecting --> Validating: Pre-Trade Checks
+    
+    Validating --> Rejected: Risk/Limit Fail
+    Rejected --> Logging
+    
+    Validating --> Sized: Risk Gate Passed
+    Sized --> Executing: Submit Order(s)
+    
+    Executing --> PartiallyFilled: Partial Fill Detected
+    PartiallyFilled --> Monitoring: Reconcile & Adjust
+    
+    Executing --> Filled: Full Fill Confirmed
+    Filled --> Monitoring
+    
+    Monitoring --> Closed: Take-Profit / Stop / Resolution
+    Monitoring --> Adjusting: Dynamic Re-Size or Hedge
+    
+    Closed --> Logging: Post-Trade Analysis
+    Adjusting --> Monitoring
+    
+    Logging --> [*]: Decision Recorded
+    
+    note right of Monitoring
+        Continuous reconciliation
+        vs wallet/exchange state
+        + P&L attribution
+    end note
+```
+
+**Key States**:
+- Emphasis on reconciliation and dynamic adjustment (important for autonomous systems).
+- Rejected and Logging states ensure nothing is silent.
+
+### 5. Guardrails & Human Oversight Integration
+
+How the autonomous system interacts with human oversight.
+
+```mermaid
+flowchart LR
+    Agent[Agent Reasoning
+& Proposed Action] --> Guard[Guardrails Engine
+Code + Config Rules]
+    
+    Guard -->|Auto-Approved| Execute[Execute]
+    Guard -->|Requires Review| Human[Human Review Queue
+Dashboard + Alert]
+    Human -->|Approve| Execute
+    Human -->|Modify| SizeAdjust[Adjusted Size or
+Alternative Action]
+    Human -->|Reject| LogReject[Log + Learn]
+    
+    Execute --> Audit[Immutable Audit Log
++ Performance Feedback Loop]
+    
+    classDef human fill:#f3e5f5,stroke:#7b1fa2
+    class Human,SizeAdjust human
+```
 
 ---
 
@@ -90,7 +322,7 @@ End-to-end autonomous (or semi-autonomous) agent-driven trading system. Capable 
 - **Resolution & Dispute Risk**: Not all contracts resolve cleanly or instantly. Factor in dispute windows, UMA-like oracle mechanisms if used, and probability of adverse resolution even if "correct."
 - **Arbitrage & Relative Value**: Look for persistent mispricings vs. other platforms (adjusted for fees, capital lockup, withdrawal friction, resolution differences). Also vs. aggregated external signals (polls, prediction markets, news-derived probs) when edge is statistically validated.
 - **Event Selection**: Prioritize high-liquidity, well-understood events with good external data for model calibration. Avoid low-volume or highly subjective resolutions initially.
-- **Timing Dynamics**: Strong time decay/gamma near resolution. Strategies that work days/weeks out may fail in final hours.
+- **Timing Dynamics**: Strong time decay/gamma-like effects near resolution. Strategies that work days/weeks out may fail in final hours.
 - **Fees & Costs**: Trading fees + gas (Polygon is cheap but still) + opportunity cost of capital locked in positions. Must be net positive after all.
 - **Wallet & Security**: Hot wallet for bot with strict allowances or proxy contracts. Never store large balances long-term. Use hardware wallet or multi-sig for treasury. Monitor for smart contract risks or platform changes.
 - **Regulatory Note**: Polymarket has navigated (and sometimes restricted) US users. Ensure any deployment respects current terms, geofencing if needed, and personal legal/tax advice. Prediction markets sit in a gray area between information markets, gambling, and derivatives.
@@ -239,6 +471,6 @@ End-to-end autonomous (or semi-autonomous) agent-driven trading system. Capable 
 
 ---
 
-**This is a living document.** Update it as decisions are made, backtests reveal realities, live trading teaches lessons, and life priorities evolve. The goal is not to build the fastest or most autonomous bot, but to build one that is *safe, auditable, and aligned* — one that can compound capital responsibly while fitting into a balanced, family-oriented, and professionally demanding life.
+**This is a living document (v0.2).** Update it as decisions are made, backtests reveal realities, live trading teaches lessons, and life priorities evolve. The goal is not to build the fastest or most autonomous bot, but to build one that is *safe, auditable, and aligned* — one that can compound capital responsibly while fitting into a balanced, family-oriented, and professionally demanding life.
 
-*Generated with care by Grok for @derekclair — ready for pickup by Grok Build and iterative execution.*
+*Generated with care by Grok for @derekclair — diagrams added per request. Ready for pickup by Grok Build and iterative execution.*
