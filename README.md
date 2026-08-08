@@ -221,10 +221,6 @@ All configurations are documented in [`docs/CONFIGURATION.md`](docs/CONFIGURATIO
 
 See [`docs/CONFIGURATION.md#troubleshooting`](docs/CONFIGURATION.md#troubleshooting) for more solutions.
 
-## TODO
-
-See [TODO.md](TODO.md) for planned improvements and tasks.
-
 ## QA Testing
 
 This workspace supports automated testing with Playwright MCP server. See the [Microsoft Playwright MCP](https://github.com/microsoft/playwright-mcp) documentation for setup instructions.
@@ -243,4 +239,4 @@ This is an example repository. Feel free to fork and adapt to your needs. If you
 
 ## License
 
-[Add your license here]
+This project is licensed under the [MIT License](LICENSE).
