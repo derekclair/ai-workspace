@@ -1,0 +1,6 @@
+{
+  "install": "bash .cursor/install.sh",
+  "name": "AI Workspace",
+  "ports": [5432],
+  "start": "bash .cursor/start.sh"
+}
